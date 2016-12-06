@@ -1,6 +1,8 @@
 import React from 'react';
 import store from '../store';
 import Lyrics from '../components/Lyrics';
+import {setLyrics, fetchLyrics} from '../action-creators/lyrics';
+
 
 export default class extends React.Component {
 
@@ -10,6 +12,7 @@ export default class extends React.Component {
 
     this.handleArtistInput = this.handleArtistInput.bind(this);
 	this.handleSongInput = this.handleSongInput.bind(this);
+	this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	componentDidMount () {
@@ -31,8 +34,11 @@ export default class extends React.Component {
 	}
 
 	handleSubmit() {
-		console.log('Inside handleSubmit: ');
-		console.log(this.state);
+		if (this.state.artistQuery && this.state.songQuery) {
+			store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
+		     
+		}
+
 	}
 
 	render () {
@@ -40,7 +46,7 @@ export default class extends React.Component {
 			<Lyrics 
 				artistQuery={this.state.artistQuery}
 				songQuery={this.state.songQuery}
-      			text={this.state.text}
+      			text={this.state.lyrics.text}
       			setArtist={this.handleArtistInput}
       			setSong={this.handleSongInput}
       			handleSubmit={this.handleSubmit}
